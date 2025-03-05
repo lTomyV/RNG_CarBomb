@@ -1,6 +1,19 @@
+local QBCore = exports['qb-core']:GetCoreObject()
 local timer = 0
 local armedVeh
 local ped = GetPlayerPed(-1)
+
+RegisterNetEvent('RNG_CarBomb:DetonateFromRemote')
+AddEventHandler('RNG_CarBomb:DetonateFromRemote', function()
+    local ped = GetPlayerPed(-1)
+    local coords = GetEntityCoords(ped)
+    local veh = GetClosestVehicle(coords.x, coords.y, coords.z, 3.000, 0, 71)
+    local vCoords = GetEntityCoords(veh)
+    local dist = GetDistanceBetweenCoords(coords.x, coords.y, coords.z, vCoords.x, vCoords.y, vCoords.z, false)
+    if veh and (dist < Config.remote.maxDistance) then
+        DetonateVehicle(veh)
+    end
+end)
 
 RegisterNetEvent('RNG_CarBomb:CheckIfRequirementsAreMet')
 AddEventHandler('RNG_CarBomb:CheckIfRequirementsAreMet', function()
@@ -20,11 +33,21 @@ AddEventHandler('RNG_CarBomb:CheckIfRequirementsAreMet', function()
             if Config.ProgressBarType == 0 then
                 return
             elseif Config.ProgressBarType == 1 then
-                exports['progressBars']:startUI(Config.TimeTakenToArm * 1000, _U('arming'))
+                QBCore.Functions.Progressbar('arming_bomb', 'Arming the bomb...', Config.TimeTakenToArm * 1000, false, true, {
+                    disableMovement = true,
+                    disableCarMovement = true,
+                    disableMouse = false,
+                    disableCombat = true
+                    }, {}, {}, {}, function()
+                        print('Bomb armed successfully')
+                    end, function()
+                        print('Bomb arming failed')
+                        return
+                end)
             elseif Config.ProgressBarType == 2 then
-                FastMythticProg(_U('arming'), Config.TimeTakenToArm * 1000)
+                --EXAMPLE
+                --FastMythticProg(_U('arming'), Config.TimeTakenToArm * 1000)
             end
-            Citizen.Wait(Config.TimeTakenToArm * 1000)
             ClearPedTasksImmediately(ped)
             TriggerServerEvent('RNG_CarBomb:RemoveBombFromInv')
             
@@ -80,11 +103,7 @@ AddEventHandler('RNG_CarBomb:CheckIfRequirementsAreMet', function()
                         if SpeedKMH >= Config.maxSpeed then
                             DetonateVehicle(armedVeh)
                         end 
-                    end        
-                elseif Config.DetonationType == 2 and armedVeh then
-                    if IsControlJustReleased(0, Config.TriggerKey) then
-                        DetonateVehicle(armedVeh)
-                    end          
+                    end                
                 elseif Config.DetonationType == 3 and armedVeh then
                     if not IsVehicleSeatFree(armedVeh, -1)  then
                         RunTimer(armedVeh)
@@ -162,7 +181,5 @@ function FastMythticProg(message, time)
 end
 
 function ShowNotification( text )
-    SetNotificationTextEntry( "STRING" )
-    AddTextComponentString( text )
-    DrawNotification( false, false )
+    QBCore.Functions.Notify(text, 'success', 5000)
 end
