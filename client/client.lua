@@ -20,6 +20,18 @@ end
 
 RegisterNetEvent('RNG_CarBomb:CheckIfRequirementsAreMet')
 AddEventHandler('RNG_CarBomb:CheckIfRequirementsAreMet', function()
+    if armedVeh then
+        if Config.UsingMythicNotifications then
+            TriggerEvent('mythic_notify:client:SendAlert', { type = 'error', text = _U('alreadyarmed'), length = 5500})
+        else
+            ShowNotification(_U('alreadyarmed'))    
+        end 
+    else
+        ArmingBomb()
+    end
+end)
+
+function ArmingBomb()
     local ped = GetPlayerPed(-1)
     local coords = GetEntityCoords(ped)
     local veh = GetClosestVehicle(coords.x, coords.y, coords.z, 3.000, 0, 71)
@@ -133,7 +145,7 @@ AddEventHandler('RNG_CarBomb:CheckIfRequirementsAreMet', function()
             ShowNotification(_U('cantinside'))    
         end 
     end
-end)
+end
 
 function RunTimer(veh)
     timer = Config.TimeUntilDetonation

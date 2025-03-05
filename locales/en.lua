@@ -1,6 +1,7 @@
 Locales['en'] = {
   ['novehnearby'] = 'There is vehicle nearby',
   ['cantinside']  = 'You cannot do this from inside a vehicle!',
+  ['alreadyarmed'] = 'You have an already bomb',
   ['arming']      = 'Arming the device',
   ['vanilla']     = 'The device will explode in %s seconds',
   ['speed']       = 'The device will explode at the speed of %s %s',
