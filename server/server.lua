@@ -25,3 +25,10 @@ if Config.DetonationType == 2 then
         
         TriggerClientEvent('RNG_CarBomb:DetonateFromRemote', source)
     end)
+
+    RegisterServerEvent('RNG_CarBomb:RemoveRemoteFromInv')
+    AddEventHandler('RNG_CarBomb:RemoveRemoteFromInv', function()
+        local Player = QBCore.Functions.GetPlayer(source)
+        Player.Functions.RemoveItem(Config.remote.item, 1)
+    end)
+end

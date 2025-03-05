@@ -3,17 +3,20 @@ local timer = 0
 local armedVeh
 local ped = GetPlayerPed(-1)
 
-RegisterNetEvent('RNG_CarBomb:DetonateFromRemote')
-AddEventHandler('RNG_CarBomb:DetonateFromRemote', function()
-    local ped = GetPlayerPed(-1)
-    local coords = GetEntityCoords(ped)
-    local veh = GetClosestVehicle(coords.x, coords.y, coords.z, 3.000, 0, 71)
-    local vCoords = GetEntityCoords(veh)
-    local dist = GetDistanceBetweenCoords(coords.x, coords.y, coords.z, vCoords.x, vCoords.y, vCoords.z, false)
-    if veh and (dist < Config.remote.maxDistance) then
-        DetonateVehicle(veh)
-    end
-end)
+if Config.DetonationType == 2 then
+    RegisterNetEvent('RNG_CarBomb:DetonateFromRemote')
+    AddEventHandler('RNG_CarBomb:DetonateFromRemote', function()
+        local ped = GetPlayerPed(-1)
+        local coords = GetEntityCoords(ped)
+        local veh = GetClosestVehicle(coords.x, coords.y, coords.z, 3.000, 0, 71)
+        local vCoords = GetEntityCoords(veh)
+        local dist = GetDistanceBetweenCoords(coords.x, coords.y, coords.z, vCoords.x, vCoords.y, vCoords.z, false)
+        if veh and (dist < Config.remote.maxDistance) then
+            DetonateVehicle(veh)
+        end
+    end)
+end
+
 
 RegisterNetEvent('RNG_CarBomb:CheckIfRequirementsAreMet')
 AddEventHandler('RNG_CarBomb:CheckIfRequirementsAreMet', function()

@@ -1,21 +1,18 @@
 fx_version 'adamant'
-
 game 'gta5'
+author 'Bear & lTomyV'
 
 description 'useable item that detonates after being attached to a vehicle'
 
-version '1.1.0'
+version 'QB.1.0'
 
 client_scripts {
-    '@es_extended/locale.lua',
-    'carbomb-client.lua',
-    'locales/en.lua',
-    'locales/it.lua'
+    'client/client.lua',
+    'locales/*.lua'
 }
 
 server_scripts {
-    '@es_extended/locale.lua',
-    'carbomb-server.lua'
+    'server/server.lua'
 }
 
-shared_script 'carbomb-config.lua'
+shared_script 'config.lua'
